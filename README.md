@@ -1,6 +1,6 @@
 # Sawyer Silas · Official Music
 
-**Website release v1.0.1** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.0** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
 
@@ -25,14 +25,14 @@ Cloudflare redeploys after pushes to the connected branch. [Cloudflare Pages Git
 
 ## How the catalog updates
 
-The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for one hour at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases use their individual HyperFollow links so fans can choose among available services. If the lookup fails, visitors can still see those releases and use their links.
+The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for one hour at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the three story pages and use their published links.
 
-The featured story, cover, and dates are editable in `public/index.html`. Add social or artist links to the footer there. To feature a different release, update the featured content and date in the HTML, the date in `public/site.js`, and the featured title in `functions/api/catalog.js`.
+The homepage is in `public/index.html`. Edit the individual song stories, covers, and direct listening links in `public/songs/<song-slug>/index.html`. Add confirmed storefront URLs to the song’s Listen section as they become available. Newly discovered catalog entries link directly to Apple Music until you create a dedicated story page and add it to the homepage.
 
 ## Audio sample
 
-The player appears when the catalog provides a preview for the featured song. To choose exactly what people hear, put your own cleared MP3 clip at `public/assets/caught-in-the-rise-preview.mp3` and set `LOCAL_PREVIEW` in `public/site.js` to `'./assets/caught-in-the-rise-preview.mp3'`. An MP3 clip is optional. The page always offers the featured HyperFollow link.
+The player appears when the catalog provides a preview for the featured song. To choose exactly what people hear, put your own cleared MP3 clip at `public/assets/caught-in-the-rise-preview.mp3` and set `LOCAL_PREVIEW` in `public/site.js` to `'assets/caught-in-the-rise-preview.mp3'`. An MP3 clip is optional. The song page also links to the Sawyer Silas Spotify and Apple Music profiles.
 
 ## Local preview
 
-Run `node build.mjs` to produce the static site in `dist/`. Open `dist/index.html` for an offline look. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
+Run `node build.mjs` to produce the static site in `dist/`. Serve `dist/` with a local web server to check the song pages and their links. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
