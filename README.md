@@ -1,6 +1,6 @@
 # Sawyer Silas · Official Music
 
-**Website release v1.1.2** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.3** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
 
@@ -31,7 +31,7 @@ The homepage is in `public/index.html`. Edit the individual song stories, covers
 
 ## Audio sample
 
-“Gator Bob” and “One More Angel” use embedded Apple Music players. “Caught in the Rise” loads its player when the Cloudflare catalog finds the matching Apple Music track. To choose exactly what people hear, put your own cleared MP3 clip at `public/assets/caught-in-the-rise-preview.mp3` and set `LOCAL_PREVIEW` in `public/site.js` to `'assets/caught-in-the-rise-preview.mp3'`. An MP3 clip is optional. The song page also links to the Sawyer Silas Spotify and Apple Music profiles.
+Every song page uses the browser’s built-in player for a 30-second preview. “Gator Bob” and “One More Angel” stream their promotional samples from iTunes. “Caught in the Rise” plays the excerpt at `public/assets/caught-in-the-rise-preview.m4a` immediately, independently of the catalog. The site package contains only this excerpt. Keep the master WAV outside the repository.
 
 ## Local preview
 
