@@ -73,6 +73,15 @@ blockquote{margin:1.55rem 0 0;padding:.35rem 0 .35rem 1.2rem;border-left:2px sol
 .preview-credit{display:flex;align-items:center;flex-wrap:wrap;gap:.65rem;margin-top:.75rem;color:var(--cream)}
 .preview-credit img{width:auto;height:30px}
 .preview-unavailable{font-size:.85rem}
+.release-notice{
+  margin-top:1rem;
+  padding:.75rem .95rem;
+  border:1px solid #ffffff38;
+  border-radius:.7rem;
+  background:linear-gradient(145deg,#ffffff29,#ffffff15);
+}
+.release-notice strong{display:block;color:var(--cream)}
+.release-notice span{display:block;font-size:.85rem}
 .service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.62rem;margin-top:1rem}
 .service-grid .button{
   justify-content:flex-start;

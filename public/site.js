@@ -61,9 +61,16 @@ async function loadCatalog() {
     const response = await fetch(new URL('api/catalog?v=2', SITE_ROOT), { headers: { Accept: 'application/json' } });
     if (!response.ok) return;
     const { featured, releases } = await response.json();
-    if (featuredApple && featured?.url) {
-      featuredApple.href = featured.url;
-      featuredApple.hidden = false;
+    if (featuredApple?.hidden && featured?.url) {
+      const songUrl = new URL(featured.url);
+      if (songUrl.protocol === 'https:' && songUrl.hostname === 'music.apple.com' &&
+          /^\/[a-z]{2}\/album\/caught-in-the-rise(?:-single)?\/\d+\/?$/i.test(songUrl.pathname)) {
+        featuredApple.href = songUrl.href;
+        featuredApple.hidden = false;
+        featuredApple.parentElement.hidden = false;
+        const pending = document.querySelector('#release-links-pending');
+        if (pending) pending.hidden = true;
+      }
     }
     if (!records) return;
     const key = (title, date) => title.trim().toLowerCase() + '|' + date;
