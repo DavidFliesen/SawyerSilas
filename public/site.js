@@ -1,5 +1,6 @@
 const RELEASE_DATE = '2026-11-11';
-const LOCAL_PREVIEW = ''; // Set to './assets/caught-in-the-rise-preview.mp3' after adding your clip.
+const SITE_ROOT = new URL('./', document.currentScript.src);
+const LOCAL_PREVIEW = ''; // Set to 'assets/caught-in-the-rise-preview.mp3' after adding your clip.
 const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 const audio = document.querySelector('#preview');
 const previewStatus = document.querySelector('#preview-status');
@@ -7,12 +8,8 @@ const records = document.querySelector('#records');
 const share = document.querySelector('#share');
 const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
 
-if (today < RELEASE_DATE) {
-  for (const link of document.querySelectorAll('[data-release-link]')) {
-    link.textContent = 'Pre-save the single';
-  }
-} else {
-  previewStatus.textContent = 'Use the listening link to find the single on your preferred service.';
+if (previewStatus && today >= RELEASE_DATE) {
+  previewStatus.textContent = 'Streaming links will appear as services list the single.';
 }
 
 function showPreview(source, message) {
@@ -21,12 +18,12 @@ function showPreview(source, message) {
   previewStatus.textContent = message;
 }
 
-audio.addEventListener('error', () => {
+audio?.addEventListener('error', () => {
   audio.hidden = true;
   previewStatus.textContent = 'The audio preview is unavailable. Use the listening link to find the single.';
 });
 
-if (LOCAL_PREVIEW) showPreview(LOCAL_PREVIEW, 'Listen to a preview of “Caught in the Rise.”');
+if (audio && LOCAL_PREVIEW) showPreview(new URL(LOCAL_PREVIEW, SITE_ROOT), 'Listen to a preview of “Caught in the Rise.”');
 
 function addCatalogRelease(release) {
   const record = document.createElement('article');
@@ -65,17 +62,19 @@ function addCatalogRelease(release) {
 
 async function loadCatalog() {
   try {
-    const response = await fetch('./api/catalog', { headers: { Accept: 'application/json' } });
+    const response = await fetch(new URL('api/catalog', SITE_ROOT), { headers: { Accept: 'application/json' } });
     if (!response.ok) return;
     const { featured, releases } = await response.json();
-    if (featured?.url) {
+    if (audio && featured?.url) {
       const apple = document.querySelector('#featured-apple');
       apple.href = featured.url;
       apple.hidden = false;
+      previewStatus.textContent = 'Listen to the single on Apple Music.';
       if (!LOCAL_PREVIEW && featured.preview) {
         showPreview(featured.preview, 'Listen to an Apple Music preview of “Caught in the Rise.”');
       }
     }
+    if (!records) return;
     const key = (title, date) => title.trim().toLowerCase() + '|' + date;
     const existing = new Set([...records.children].map(row => key(row.dataset.title, row.dataset.date)));
     for (const release of releases) {
@@ -92,14 +91,14 @@ async function loadCatalog() {
 if (navigator.share || navigator.clipboard) {
   share.hidden = false;
   share.addEventListener('click', async () => {
-    const url = new URL('./', location.href).href;
+    const url = new URL(location.pathname, location.href).href;
     const status = document.querySelector('#share-status');
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Sawyer Silas | Official Music', url });
+        await navigator.share({ title: document.title, url });
       } else {
         await navigator.clipboard.writeText(url);
-        status.textContent = 'Artist page link copied.';
+        status.textContent = 'Page link copied.';
       }
     } catch (error) {
       if (error.name !== 'AbortError') status.textContent = 'Copy the link from your address bar.';
@@ -107,4 +106,4 @@ if (navigator.share || navigator.clipboard) {
   });
 }
 
-if (location.protocol.startsWith('http')) loadCatalog();
+if ((records || audio) && location.protocol.startsWith('http')) loadCatalog();
