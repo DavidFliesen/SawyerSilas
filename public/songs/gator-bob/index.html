@@ -65,13 +65,17 @@
         <div>
           <p class="eyebrow"><span></span> From the record</p>
           <h2 id="listen-title">Hear the <em>song</em></h2>
-          <p>Play a preview here, or choose where to stream or buy the single.</p>
+          <p>Play a 30-second preview, or choose where to stream or buy the single.</p>
         </div>
         <div class="listen-controls">
-          <iframe class="song-player" src="https://embed.music.apple.com/us/album/gator-bob/6821473283?i=6821473287"
-            title="Apple Music player for Gator Bob" height="175" loading="lazy"
-            allow="autoplay; encrypted-media; fullscreen"
-            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+          <audio class="song-preview" controls controlslist="nodownload" preload="none" src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/49/2e/7e/492e7e36-d246-af3c-f8a1-7346ac287857/mzaf_146734773805422692.plus.aac.p.m4a" aria-label="Gator Bob 30-second preview">
+            Your browser does not support the audio player.
+          </audio>
+          <p class="preview-unavailable" role="status" hidden>The preview is unavailable. Choose a listening service below.</p>
+          <div class="preview-credit">
+            <a href="https://music.apple.com/us/album/gator-bob/6821473283?i=6821473287&amp;app=itunes"><img src="../../assets/buy-on-itunes.svg" alt="Buy on the iTunes Store" height="30"></a>
+            <small>Preview provided courtesy of iTunes.</small>
+          </div>
           <div class="actions">
             <a class="service-link button primary" href="https://open.spotify.com/album/72G8u0Bh8iGIPS9kIdUryX"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify</a>
             <a class="service-link button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music</a>
@@ -81,7 +85,6 @@
             <a class="service-link button quiet" href="https://tidal.com/track/568753031"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#tidal"></use></svg>TIDAL</a>
             <a class="service-link button quiet" href="https://www.qobuz.com/us-en/album/gator-bob-sawyer-silas/gbudst9dli3x2"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#qobuz"></use></svg>Qobuz</a>
             <a class="service-link button quiet" href="https://www.iheart.com/artist/sawyer-silas-52206517/songs/gator-bob-439138146"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#iheartradio"></use></svg>iHeartRadio</a>
-            <a class="service-link button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283?uo=4"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#itunes"></use></svg>iTunes</a>
             <a class="service-link button quiet" href="https://www.amazon.com/gp/product/B0HMKFHRRR"><svg class="service-icon service-icon-wide" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#amazon"></use></svg>Amazon Store</a>
           </div>
         </div>
