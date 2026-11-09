@@ -6,7 +6,7 @@ function lookup(params) {
   const query = new URLSearchParams({ country: 'US', ...params });
   return fetch('https://itunes.apple.com/lookup?' + query, {
     headers: { Accept: 'application/json' },
-    signal: AbortSignal.timeout(5000),
+    signal: AbortSignal.timeout(9000),
   }).then(response => {
     if (!response.ok) throw new Error('Catalog request failed');
     return response.json();
@@ -24,7 +24,7 @@ function safeUrl(value, host) {
 }
 
 export async function onRequestGet({ request, waitUntil }) {
-  const cacheKey = new Request(new URL('/api/catalog', request.url));
+  const cacheKey = new Request(new URL('/api/catalog?v=2', request.url));
   const cache = globalThis.caches?.default;
   try {
     const saved = await cache?.match(cacheKey);
@@ -51,6 +51,7 @@ export async function onRequestGet({ request, waitUntil }) {
     }).sort((a, b) => b.date.localeCompare(a.date));
     const featured = releases.find(item => item.title.toLowerCase() === FEATURED_TITLE);
     let preview = null;
+    let embed = null;
 
     if (featured) {
       try {
@@ -60,13 +61,21 @@ export async function onRequestGet({ request, waitUntil }) {
           item.trackName?.toLowerCase() === FEATURED_TITLE);
         const previewHost = /^(?:audio-ssl\.itunes\.apple\.com|(?:[a-z0-9-]+\.)*mzstatic\.com)$/;
         preview = safeUrl(track?.previewUrl, previewHost);
+        const trackUrl = safeUrl(track?.trackViewUrl, 'music.apple.com');
+        if (trackUrl && Number.isSafeInteger(track.trackId)) {
+          const playerUrl = new URL(trackUrl);
+          playerUrl.hostname = 'embed.music.apple.com';
+          playerUrl.search = '';
+          playerUrl.searchParams.set('i', track.trackId);
+          embed = playerUrl.href;
+        }
       } catch {
         // A failed preview lookup should still leave the catalog usable.
       }
     }
 
     const response = Response.json({
-      featured: featured ? { url: featured.url, preview } : null,
+      featured: featured ? { url: featured.url, preview, embed } : null,
       releases: releases.filter(item => item.title.toLowerCase() !== FEATURED_TITLE),
     }, { headers: { 'Cache-Control': 'public, max-age=' + CACHE_SECONDS } });
     if (cache) waitUntil(cache.put(cacheKey, response.clone()).catch(() => {}));
