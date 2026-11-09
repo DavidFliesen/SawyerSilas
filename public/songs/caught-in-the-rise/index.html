@@ -10,8 +10,8 @@
   <meta property="og:image" content="../../assets/caught-in-the-rise.webp">
   <title>Caught in the Rise | Sawyer Silas</title>
   <link rel="icon" href="../../assets/mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../../styles.css?v=1.1.4">
-  <script src="../../site.js?v=1.1.4" defer></script>
+  <link rel="stylesheet" href="../../styles.css?v=1.1.5">
+  <script src="../../site.js?v=1.1.5" defer></script>
 </head>
 <body class="song-page theme-caught-in-the-rise">
   <a class="skip" href="#main">Skip to song</a>
@@ -71,14 +71,20 @@
           <p>Play a 30-second preview of the single.</p>
         </div>
         <div class="listen-controls">
-          <audio class="song-preview" controls controlslist="nodownload" preload="none" src="../../assets/caught-in-the-rise-preview.m4a" aria-label="Caught in the Rise 30-second preview">
-            Your browser does not support the audio player.
-          </audio>
-          <p class="preview-unavailable" role="status" hidden>The preview is unavailable. Choose a listening service below.</p>
-          <div class="actions">
-            <a class="service-link button primary" id="featured-apple" hidden><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Listen on Apple Music</a>
-            <a class="service-link button quiet" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Sawyer Silas on Spotify</a>
-            <a class="service-link button quiet" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Sawyer Silas on Apple Music</a>
+          <div class="preview-panel">
+            <div class="preview-heading">
+              <span>Song preview</span>
+              <span class="preview-length">30 seconds</span>
+            </div>
+            <audio class="song-preview" controls controlslist="nodownload" preload="none" src="../../assets/caught-in-the-rise-preview.m4a" aria-label="Caught in the Rise 30-second preview">
+              Your browser does not support the audio player.
+            </audio>
+            <p class="preview-unavailable" role="status" hidden>The preview is unavailable. Choose a listening service below.</p>
+          </div>
+          <div class="service-grid" aria-label="Streaming and download services" role="group">
+            <a class="service-link button" id="featured-apple" hidden><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Listen on Apple Music</a>
+            <a class="service-link button" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify artist</a>
+            <a class="service-link button" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music artist</a>
           </div>
         </div>
       </div>
@@ -129,7 +135,7 @@
       <span id="share-status" role="status"></span>
     </div>
     <p class="wrap label-credit">Sawyer Silas releases music through Ridgeworn Records.</p>
-    <p class="wrap site-release">Website release v1.1.4</p>
+    <p class="wrap site-release">Website release v1.1.5</p>
   </footer>
 </body>
 </html>
