@@ -115,6 +115,13 @@ blockquote{margin:1.55rem 0 0;padding:.35rem 0 .35rem 1.2rem;border-left:2px sol
 .theme-one-more-angel .story-grid{grid-template-columns:1fr;gap:1.35rem;max-width:690px}
 
 .service-link{display:inline-flex;align-items:center;gap:.45em}
-.service-icon{width:1.15em;height:1.15em;flex:none;fill:currentColor}
-.service-icon-wide{width:2.25em}
+.service-icon{width:1.8em;height:1.8em;flex:none;padding:.25em;border-radius:.28em;background:#121414;fill:#fff}
+.service-icon:has(use[href$="#spotify"]){fill:#1ed760}
+.service-icon:has(use[href$="#applemusic"]){background:#bd234d}
+.service-icon:has(use[href$="#youtube"]),.service-icon:has(use[href$="#youtubemusic"]){background:#b31421}
+.service-icon:has(use[href$="#amazonmusic"]){background:#225983}
+.service-icon:has(use[href$="#iheartradio"]){background:#ad1834}
+.service-icon:has(use[href$="#qobuz"]){background:#0753a4}
+.service-icon-wide{width:2.55em}
+.site-release{padding-bottom:1rem;color:var(--muted);font-size:.7rem}
 .credits{padding-block:1rem;background:var(--deep);border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
