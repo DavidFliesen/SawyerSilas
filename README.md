@@ -1,6 +1,6 @@
 # Sawyer Silas · Official Music
 
-**Website release v1.1.0** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.2** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
 
@@ -31,8 +31,10 @@ The homepage is in `public/index.html`. Edit the individual song stories, covers
 
 ## Audio sample
 
-The player appears when the catalog provides a preview for the featured song. To choose exactly what people hear, put your own cleared MP3 clip at `public/assets/caught-in-the-rise-preview.mp3` and set `LOCAL_PREVIEW` in `public/site.js` to `'assets/caught-in-the-rise-preview.mp3'`. An MP3 clip is optional. The song page also links to the Sawyer Silas Spotify and Apple Music profiles.
+“Gator Bob” and “One More Angel” use embedded Apple Music players. “Caught in the Rise” loads its player when the Cloudflare catalog finds the matching Apple Music track. To choose exactly what people hear, put your own cleared MP3 clip at `public/assets/caught-in-the-rise-preview.mp3` and set `LOCAL_PREVIEW` in `public/site.js` to `'assets/caught-in-the-rise-preview.mp3'`. An MP3 clip is optional. The song page also links to the Sawyer Silas Spotify and Apple Music profiles.
 
 ## Local preview
 
 Run `node build.mjs` to produce the static site in `dist/`. Serve `dist/` with a local web server to check the song pages and their links. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
+
+The music service icons are sourced from [Simple Icons](https://github.com/simple-icons/simple-icons) and [Musicfetch’s Qobuz brand assets](https://musicfetch.io/services/qobuz/assets).
