@@ -4,6 +4,7 @@ const LOCAL_PREVIEW = ''; // Set to 'assets/caught-in-the-rise-preview.mp3' afte
 const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 const audio = document.querySelector('#preview');
 const previewStatus = document.querySelector('#preview-status');
+const featuredPlayer = document.querySelector('#featured-player');
 const records = document.querySelector('#records');
 const share = document.querySelector('#share');
 const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
@@ -51,9 +52,17 @@ function addCatalogRelease(release) {
   title.textContent = release.title;
   details.append(date, title);
   const link = document.createElement('a');
-  link.className = 'text-link';
+  link.className = 'text-link service-link';
   link.href = release.url;
-  link.textContent = 'Apple Music';
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  const icon = document.createElementNS(svgNamespace, 'svg');
+  icon.setAttribute('class', 'service-icon');
+  icon.setAttribute('aria-hidden', 'true');
+  icon.setAttribute('focusable', 'false');
+  const use = document.createElementNS(svgNamespace, 'use');
+  use.setAttribute('href', new URL('assets/music-services.svg#applemusic', SITE_ROOT).href);
+  icon.append(use);
+  link.append(icon, 'Apple Music');
   link.setAttribute('aria-label', 'Listen to ' + release.title + ' on Apple Music');
   record.append(details, link);
   const next = [...records.children].find(row => row.dataset.date < release.date);
@@ -62,16 +71,22 @@ function addCatalogRelease(release) {
 
 async function loadCatalog() {
   try {
-    const response = await fetch(new URL('api/catalog', SITE_ROOT), { headers: { Accept: 'application/json' } });
+    const response = await fetch(new URL('api/catalog?v=2', SITE_ROOT), { headers: { Accept: 'application/json' } });
     if (!response.ok) return;
     const { featured, releases } = await response.json();
     if (audio && featured?.url) {
       const apple = document.querySelector('#featured-apple');
       apple.href = featured.url;
       apple.hidden = false;
-      previewStatus.textContent = 'Listen to the single on Apple Music.';
-      if (!LOCAL_PREVIEW && featured.preview) {
-        showPreview(featured.preview, 'Listen to an Apple Music preview of “Caught in the Rise.”');
+      if (!LOCAL_PREVIEW) {
+        previewStatus.textContent = 'Listen to the single on Apple Music.';
+        if (featured.embed && featuredPlayer) {
+          featuredPlayer.src = featured.embed;
+          featuredPlayer.hidden = false;
+          previewStatus.textContent = 'Play a preview here, or open the single on Apple Music.';
+        } else if (featured.preview) {
+          showPreview(featured.preview, 'Listen to an Apple Music preview of “Caught in the Rise.”');
+        }
       }
     }
     if (!records) return;

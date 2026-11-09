@@ -46,6 +46,7 @@ blockquote{margin:1.55rem 0 0;padding:.35rem 0 .35rem 1.2rem;border-left:2px sol
 .listen{border-block:1px solid #8a69454d;background:#2e271b}
 .listen-inner{display:grid;grid-template-columns:.83fr 1fr;align-items:center;gap:clamp(1.1rem,6vw,6rem);padding-block:clamp(2rem,5vw,4rem)}
 #preview-status{color:var(--muted)}
+.song-player{display:block;width:100%;max-width:660px;border:0;border-radius:10px;background:transparent}
 audio{width:min(100%,32rem);display:block}
 .listen-controls .actions{margin-top:.8rem}
 .artist-grid{display:grid;grid-template-columns:minmax(0,.63fr) 1fr;align-items:center;gap:clamp(2rem,8vw,8rem);padding-block:clamp(3rem,7vw,6rem)}
@@ -111,3 +112,8 @@ audio{width:min(100%,32rem);display:block}
 .theme-one-more-angel .story{background:#31283d}
 .theme-one-more-angel .listen{background:#403043;border-color:var(--line)}
 .theme-one-more-angel .story-grid{grid-template-columns:1fr;gap:1.35rem;max-width:690px}
+
+.service-link{display:inline-flex;align-items:center;gap:.45em}
+.service-icon{width:1.15em;height:1.15em;flex:none;fill:currentColor}
+.service-icon-wide{width:2.25em}
+.credits{padding-block:1rem;background:var(--deep);border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
