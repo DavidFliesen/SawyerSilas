@@ -64,13 +64,17 @@
         <div>
           <p class="eyebrow"><span></span> From the record</p>
           <h2 id="listen-title">Hear the <em>song</em></h2>
-          <p>Play a preview here, or choose where to stream or buy the single.</p>
+          <p>Play a 30-second preview, or choose where to stream or buy the single.</p>
         </div>
         <div class="listen-controls">
-          <iframe class="song-player" src="https://embed.music.apple.com/us/album/one-more-angel/6808497468?i=6808497469"
-            title="Apple Music player for One More Angel" height="175" loading="lazy"
-            allow="autoplay; encrypted-media; fullscreen"
-            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+          <audio class="song-preview" controls controlslist="nodownload" preload="none" src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/af/14/00/af14003d-cc77-16d2-0783-32683cb32fb6/mzaf_3023047372665261064.plus.aac.p.m4a" aria-label="One More Angel 30-second preview">
+            Your browser does not support the audio player.
+          </audio>
+          <p class="preview-unavailable" role="status" hidden>The preview is unavailable. Choose a listening service below.</p>
+          <div class="preview-credit">
+            <a href="https://music.apple.com/us/album/one-more-angel/6808497468?i=6808497469&amp;app=itunes"><img src="../../assets/buy-on-itunes.svg" alt="Buy on the iTunes Store" height="30"></a>
+            <small>Preview provided courtesy of iTunes.</small>
+          </div>
           <div class="actions">
             <a class="service-link button primary" href="https://open.spotify.com/album/2pZFHPrNvNWyklKYS9yMpJ"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify</a>
             <a class="service-link button quiet" href="https://music.apple.com/us/album/one-more-angel-single/6808497468"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music</a>
@@ -79,7 +83,6 @@
             <a class="service-link button quiet" href="https://tidal.com/album/558317851"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#tidal"></use></svg>TIDAL</a>
             <a class="service-link button quiet" href="https://www.qobuz.com/us-en/album/one-more-angel-sawyer-silas/zc8nm7e447csp"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#qobuz"></use></svg>Qobuz</a>
             <a class="service-link button quiet" href="https://www.iheart.com/artist/sawyer-silas-52206517/songs/one-more-angel-429985911"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#iheartradio"></use></svg>iHeartRadio</a>
-            <a class="service-link button quiet" href="https://music.apple.com/us/album/one-more-angel-single/6808497468?uo=4"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#itunes"></use></svg>iTunes</a>
             <a class="service-link button quiet" href="https://www.amazon.com/gp/product/B0HHQP17KR"><svg class="service-icon service-icon-wide" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#amazon"></use></svg>Amazon Store</a>
           </div>
         </div>
