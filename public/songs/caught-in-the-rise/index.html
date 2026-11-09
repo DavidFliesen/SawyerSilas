@@ -68,14 +68,13 @@
         <div>
           <p class="eyebrow"><span></span> From the record</p>
           <h2 id="listen-title">Hear the <em>song</em></h2>
-          <p id="preview-status">While you wait, follow Sawyer Silas on Spotify or Apple Music.</p>
+          <p>Play a 30-second preview of the single.</p>
         </div>
         <div class="listen-controls">
-          <iframe class="song-player" id="featured-player" hidden
-            title="Apple Music player for Caught in the Rise" height="175" loading="lazy"
-            allow="autoplay; encrypted-media; fullscreen"
-            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
-          <audio id="preview" controls preload="none" aria-label="Caught in the Rise audio preview" hidden></audio>
+          <audio class="song-preview" controls controlslist="nodownload" preload="none" src="../../assets/caught-in-the-rise-preview.m4a" aria-label="Caught in the Rise 30-second preview">
+            Your browser does not support the audio player.
+          </audio>
+          <p class="preview-unavailable" role="status" hidden>The preview is unavailable. Choose a listening service below.</p>
           <div class="actions">
             <a class="service-link button primary" id="featured-apple" hidden><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Listen on Apple Music</a>
             <a class="service-link button quiet" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Sawyer Silas on Spotify</a>
