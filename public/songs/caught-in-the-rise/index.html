@@ -21,6 +21,7 @@
       <nav aria-label="Main navigation">
         <a href="#story">The Story</a>
         <a href="#listen">Listen</a>
+        <a href="#artist">About</a>
         <a href="../../#music">All Music</a>
       </nav>
     </div>
@@ -54,7 +55,7 @@
         <div class="story-copy">
           <p class="opening">The river looked like it was glowing from within.</p>
           <p>Mayflies lifted off the water, their wings catching the light. Trout rose to meet them, and rings spread across the surface. It felt like the whole river had come alive.</p>
-          <p>I saw that magic on the East Fork of the Greenbrier River near Thornwood in Pocahontas County, West Virginia. I’d come up from Charleston, South Carolina, with members of my Project Healing Waters Fly Fishing chapter for an event sponsored by the Southern West Virginia Chapter of Trout Unlimited.</p>
+          <p>I saw that magic on the East Fork of the Greenbrier River near Thornwood in Pocahontas County, West Virginia.</p>
           <p>I feel that same magic in the cast. The rod loads in your hand, the line unrolls in a ribbon of gold, and if you’re lucky, your fly lands right where you wanted it. You follow that drift, waiting for the slightest ripple. For a moment, that’s your whole world.</p>
           <p>I wanted to share that feeling through my music. “Caught in the Rise” carries it in a rolling outlaw-country shuffle, with a little blues in the guitar and a hook that takes me right back to that river.</p>
           <blockquote>One small fly,<br>One perfect drift.<br>One little rise,<br>And the whole world shifts.</blockquote>
@@ -70,12 +71,28 @@
           <p id="preview-status">While you wait, follow Sawyer Silas on Spotify or Apple Music.</p>
         </div>
         <div class="listen-controls">
+          <iframe class="song-player" id="featured-player" hidden
+            title="Apple Music player for Caught in the Rise" height="175" loading="lazy"
+            allow="autoplay; encrypted-media; fullscreen"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
           <audio id="preview" controls preload="none" aria-label="Caught in the Rise audio preview" hidden></audio>
           <div class="actions">
-            <a class="button primary" id="featured-apple" hidden>Listen on Apple Music</a>
-            <a class="button quiet" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos">Sawyer Silas on Spotify</a>
-            <a class="button quiet" href="https://music.apple.com/us/artist/sawyer-silas/6808334229">Sawyer Silas on Apple Music</a>
+            <a class="service-link button primary" id="featured-apple" hidden><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Listen on Apple Music</a>
+            <a class="service-link button quiet" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Sawyer Silas on Spotify</a>
+            <a class="service-link button quiet" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Sawyer Silas on Apple Music</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="artist" id="artist" aria-labelledby="artist-title">
+      <div class="wrap artist-grid">
+        <img class="portrait" src="../../assets/sawyer-silas.webp" alt="Sawyer Silas in a brown hat beside an autumn mountain creek" width="1122" height="1402" loading="lazy">
+        <div>
+          <p class="eyebrow"><span></span> About the artist</p>
+          <h2 id="artist-title">Sawyer <em>Silas</em></h2>
+          <p>Sawyer Silas makes country music with an outlaw-country edge and a touch of blues.</p>
+          <a class="service-link text-link" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Sawyer Silas on Apple Music</a>
         </div>
       </div>
     </section>
@@ -98,13 +115,16 @@
         </div>
       </div>
     </section>
+    <aside class="credits" aria-label="Fishing trip credit">
+      <p class="wrap">The fishing event was sponsored by the Southern West Virginia Chapter of Trout Unlimited, and I traveled up from Charleston, SC, with members of my Project Healing Waters Fly Fishing chapter.</p>
+    </aside>
   </main>
   <footer class="footer">
     <div class="wrap footer-inner">
       <a class="wordmark" href="../../">Sawyer <i>Silas</i></a>
       <nav aria-label="Artist and sharing links">
-        <a href="https://music.apple.com/us/artist/sawyer-silas/6808334229">Apple Music</a>
-        <a href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos">Spotify</a>
+        <a class="service-link" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music</a>
+        <a class="service-link" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify</a>
         <button id="share" type="button" hidden>Share this song</button>
       </nav>
       <span id="share-status" role="status"></span>
