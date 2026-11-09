@@ -21,6 +21,7 @@
       <nav aria-label="Main navigation">
         <a href="#story">The Story</a>
         <a href="#listen">Listen</a>
+        <a href="#artist">About</a>
         <a href="../../#music">All Music</a>
       </nav>
     </div>
@@ -64,21 +65,37 @@
         <div>
           <p class="eyebrow"><span></span> From the record</p>
           <h2 id="listen-title">Hear the <em>song</em></h2>
-          <p>Choose where to stream or buy the single.</p>
+          <p>Play a preview here, or choose where to stream or buy the single.</p>
         </div>
         <div class="listen-controls">
+          <iframe class="song-player" src="https://embed.music.apple.com/us/album/gator-bob/6821473283?i=6821473287"
+            title="Apple Music player for Gator Bob" height="175" loading="lazy"
+            allow="autoplay; encrypted-media; fullscreen"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
           <div class="actions">
-            <a class="button primary" href="https://open.spotify.com/album/72G8u0Bh8iGIPS9kIdUryX">Spotify</a>
-            <a class="button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283">Apple Music</a>
-            <a class="button quiet" href="https://music.amazon.com/albums/B0HMKFHRRR?trackAsin=B0HMKD4N47">Amazon Music</a>
-            <a class="button quiet" href="https://music.youtube.com/watch?v=NYd0-fXDRaE">YouTube Music</a>
-            <a class="button quiet" href="https://www.youtube.com/watch?v=NYd0-fXDRaE">YouTube</a>
-            <a class="button quiet" href="https://tidal.com/track/568753031">TIDAL</a>
-            <a class="button quiet" href="https://www.qobuz.com/us-en/album/gator-bob-sawyer-silas/gbudst9dli3x2">Qobuz</a>
-            <a class="button quiet" href="https://www.iheart.com/artist/sawyer-silas-52206517/songs/gator-bob-439138146">iHeartRadio</a>
-            <a class="button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283?uo=4">iTunes</a>
-            <a class="button quiet" href="https://www.amazon.com/gp/product/B0HMKFHRRR">Amazon Store</a>
+            <a class="service-link button primary" href="https://open.spotify.com/album/72G8u0Bh8iGIPS9kIdUryX"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify</a>
+            <a class="service-link button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music</a>
+            <a class="service-link button quiet" href="https://music.amazon.com/albums/B0HMKFHRRR?trackAsin=B0HMKD4N47"><svg class="service-icon service-icon-wide" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#amazonmusic"></use></svg>Amazon Music</a>
+            <a class="service-link button quiet" href="https://music.youtube.com/watch?v=NYd0-fXDRaE"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#youtubemusic"></use></svg>YouTube Music</a>
+            <a class="service-link button quiet" href="https://www.youtube.com/watch?v=NYd0-fXDRaE"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#youtube"></use></svg>YouTube</a>
+            <a class="service-link button quiet" href="https://tidal.com/track/568753031"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#tidal"></use></svg>TIDAL</a>
+            <a class="service-link button quiet" href="https://www.qobuz.com/us-en/album/gator-bob-sawyer-silas/gbudst9dli3x2"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#qobuz"></use></svg>Qobuz</a>
+            <a class="service-link button quiet" href="https://www.iheart.com/artist/sawyer-silas-52206517/songs/gator-bob-439138146"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#iheartradio"></use></svg>iHeartRadio</a>
+            <a class="service-link button quiet" href="https://music.apple.com/us/album/gator-bob-single/6821473283?uo=4"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#itunes"></use></svg>iTunes</a>
+            <a class="service-link button quiet" href="https://www.amazon.com/gp/product/B0HMKFHRRR"><svg class="service-icon service-icon-wide" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#amazon"></use></svg>Amazon Store</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="artist" id="artist" aria-labelledby="artist-title">
+      <div class="wrap artist-grid">
+        <img class="portrait" src="../../assets/sawyer-silas.webp" alt="Sawyer Silas in a brown hat beside an autumn mountain creek" width="1122" height="1402" loading="lazy">
+        <div>
+          <p class="eyebrow"><span></span> About the artist</p>
+          <h2 id="artist-title">Sawyer <em>Silas</em></h2>
+          <p>Sawyer Silas makes country music with an outlaw-country edge and a touch of blues.</p>
+          <a class="service-link text-link" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Sawyer Silas on Apple Music</a>
         </div>
       </div>
     </section>
@@ -106,8 +123,8 @@
     <div class="wrap footer-inner">
       <a class="wordmark" href="../../">Sawyer <i>Silas</i></a>
       <nav aria-label="Artist and sharing links">
-        <a href="https://music.apple.com/us/artist/sawyer-silas/6808334229">Apple Music</a>
-        <a href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos">Spotify</a>
+        <a class="service-link" href="https://music.apple.com/us/artist/sawyer-silas/6808334229"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#applemusic"></use></svg>Apple Music</a>
+        <a class="service-link" href="https://open.spotify.com/artist/2IvsRWouUpZ3KpmjlUSfos"><svg class="service-icon" aria-hidden="true" focusable="false"><use href="../../assets/music-services.svg#spotify"></use></svg>Spotify</a>
         <button id="share" type="button" hidden>Share this song</button>
       </nav>
       <span id="share-status" role="status"></span>
