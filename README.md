@@ -1,9 +1,17 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.12** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.13** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.13
+
+- Restored the complete “Caught in the Rise” page after its repository file was replaced by a zero-byte empty file.
+- Restored the story section, working `#story` and `#listen` anchors, 30-second preview, artist section, catalog, and direct listening links.
+- Retained all eight previously verified music-service links and added the newly verified Deezer single page.
+- Rechecked the homepage “Read the Story” and “Listening Links” buttons and the equivalent navigation on all three song pages.
+- Updated the visible website release number and asset cache version on every page.
 
 ## Release v1.1.12
 
