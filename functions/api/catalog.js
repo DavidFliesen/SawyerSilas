@@ -1,6 +1,6 @@
 const ARTIST_ID = 6808334229;
 const FEATURED_TITLE = 'caught in the rise';
-const CACHE_SECONDS = 3600;
+const CACHE_SECONDS = 300;
 
 function lookup(params) {
   const query = new URLSearchParams({ country: 'US', ...params });
@@ -23,8 +23,9 @@ function safeUrl(value, host) {
   }
 }
 
-export async function onRequestGet({ request, waitUntil }) {
-  const cacheKey = new Request(new URL('/api/catalog?v=2', request.url));
+export async function onRequestGet(context) {
+  const { request } = context;
+  const cacheKey = new Request(new URL('/api/catalog?v=3', request.url));
   const cache = globalThis.caches?.default;
   try {
     const saved = await cache?.match(cacheKey);
@@ -78,11 +79,14 @@ export async function onRequestGet({ request, waitUntil }) {
       featured: featured ? { url: featured.url, preview, embed } : null,
       releases: releases.filter(item => item.title.toLowerCase() !== FEATURED_TITLE),
     }, { headers: { 'Cache-Control': 'public, max-age=' + CACHE_SECONDS } });
-    if (cache) waitUntil(cache.put(cacheKey, response.clone()).catch(() => {}));
+    if (cache) {
+      try { context.waitUntil(cache.put(cacheKey, response.clone()).catch(() => {})); }
+      catch (error) { console.warn('Catalog cache unavailable:', error.message); }
+    }
     return response;
-  } catch {
-    return Response.json({ error: 'Catalog temporarily unavailable' }, {
-      status: 502,
+  } catch (error) {
+    console.warn('Apple catalog unavailable:', error.message);
+    return Response.json({ featured: null, releases: [], status: 'upstream-unavailable' }, {
       headers: { 'Cache-Control': 'no-store' },
     });
   }
