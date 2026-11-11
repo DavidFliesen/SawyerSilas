@@ -1,9 +1,16 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.10** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.11** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.11
+
+- Added a dedicated 1200 × 630 Facebook and social-sharing card for “Caught in the Rise.”
+- Matched the card to the brown-and-gold “Behind the Song” section and blended in the album-cover river, angler, fly line, mayflies, mountains, and sunset.
+- Added explicit Open Graph image type, dimensions, and alt text to encourage Facebook to use the large, high-resolution preview.
+- Updated the visible website release number and asset cache version on every page.
 
 ## Release v1.1.10
 
