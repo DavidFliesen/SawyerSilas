@@ -6,6 +6,10 @@
     {
       "service": "spotify",
       "url": "https://open.spotify.com/album/2Id9x5BGFVE7SSmULL5R2o"
+    },
+    {
+      "service": "applemusic",
+      "url": "https://music.apple.com/us/album/caught-in-the-rise-single/6832419151"
     }
   ]
 }
