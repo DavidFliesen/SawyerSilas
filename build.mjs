@@ -1,5 +1,12 @@
 import { cp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 
+import { syncReleasePages } from './scripts/render-release-links.mjs';
+import { auditSite } from './scripts/audit-site.mjs';
+
+const releaseLinks = JSON.parse(await readFile('public/data/caught-in-the-rise-links.json', 'utf8'));
+await syncReleasePages(releaseLinks.links);
+await auditSite('public');
+
 // CF_PAGES_URL can be a one-deployment hostname. Canonicals use the permanent site.
 const base = new URL(process.env.SITE_URL || 'https://sawyersilas.pages.dev/');
 if (base.protocol !== 'https:' || base.username || base.password || base.search || base.hash) {
@@ -50,5 +57,9 @@ for (const path of pages) {
   html = html.replace('</head>', '  ' + tags + '\n</head>');
   await writeFile(file, html);
 }
+// The historical capitalized URL serves the same complete, canonical homepage.
+await cp('dist/index.html', 'dist/Index.html');
 await writeFile('dist/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + pages.map(path => '  <url><loc>' + escape(new URL(path, base).href) + '</loc></url>').join('\n') + '\n</urlset>\n');
 await writeFile('dist/robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + new URL('sitemap.xml', base).href + '\n');
+
+await auditSite('dist');
