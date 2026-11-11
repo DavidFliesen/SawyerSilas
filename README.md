@@ -1,7 +1,7 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.6** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.7** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
 
@@ -26,7 +26,19 @@ Cloudflare redeploys after pushes to the connected branch. [Cloudflare Pages Git
 
 ## How the catalog updates
 
-The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for one hour at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the three story pages and use their published links.
+### Release-link updater in v1.1.7
+
+The old visitor-time lookup checked Apple only. It did not receive release notifications or commit new service links. The new **Update verified release links** GitHub Actions workflow checks every 30 minutes (:17 and :47 UTC), with a manual **Actions → Update verified release links → Run workflow** option. Upload all changed files at the repository root, including `.github/workflows/release-links.yml` (file pickers sometimes omit folders beginning with a dot).
+
+Enable Actions if GitHub prompts. The workflow requests `contents: write` for its built-in token; repository policy and branch rules must permit its commit to `main`. No personal token or music API key is required. It commits only when verified links change, allowing the connected Cloudflare Git integration to deploy the update. Scheduled runs can be delayed; GitHub may disable schedules in public repositories after 60 days of inactivity. Check the Actions log for source failures and commit errors.
+
+Discovery checks Apple's U.S. artist catalog and Deezer independently, plus an optional cross-service resolver and HyperFollow for candidate URLs. Candidates must identify the song and artist in the service's own title metadata; Apple/Deezer catalog records require the exact title and artist. Artist profiles, search URLs, pre-saves, and distributor pages are excluded. Some services block metadata access or expose no usable lookup, so this cannot guarantee automatic links from every store. A failed source is retried on the next run and never removes a previously verified link.
+
+The published JSON in `public/data/caught-in-the-rise-links.json` and the song's static grid preserve links through API outages. Visible song pages refresh published data every five minutes. The live Apple endpoint is a secondary discovery path; its cache is now five minutes and upstream errors are logged. It does not control release timing. There is no DistroKid email/webhook connection. An authenticated external integration may send the optional `repository_dispatch` event `release-published`; polling needs no such integration.
+
+This updater currently watches **Caught in the Rise** only. Add separate identity/configuration and an updater target for future songs. Keep all master audio outside GitHub.
+
+The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for five minutes at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the three story pages and use their published links.
 
 The homepage is in `public/index.html`. Edit the individual song stories, covers, and direct listening links in `public/songs/<song-slug>/index.html`. Add confirmed storefront URLs to the song’s Listen section as they become available. Newly discovered catalog entries link directly to Apple Music until you create a dedicated story page and add it to the homepage.
 

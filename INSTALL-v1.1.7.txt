@@ -1,0 +1,11 @@
+Sawyer Silas v1.1.7 — changed files only
+
+1. Extract this ZIP and upload the contents into DavidFliesen/SawyerSilas on main, preserving paths. Do not upload the ZIP itself. Do not delete existing assets. No audio is included or changed.
+2. Ensure .github/workflows/release-links.yml is uploaded. This folder begins with a dot and may be hidden by your file picker. If needed, use GitHub Add file > Create new file, enter .github/workflows/release-links.yml as the name, and paste the YAML from this ZIP.
+3. Open GitHub Actions > Update verified release links > Run workflow. Enable Actions if prompted. The workflow requests write access through the normal built-in GitHub token. Repository/organization policy or branch restrictions may prevent its commit; the run log reports that failure.
+4. Cloudflare remains: main branch, node build.mjs, dist output. Verify its deployment source matches your newest commit. Once deployed, every page footer should read Website release v1.1.7.
+
+The updater checks every 30 minutes; schedules can be delayed. It discovers links through Apple, Deezer, an optional cross-service resolver and HyperFollow candidates, then verifies service metadata. Blocked sources are logged and retried without removing confirmed links. Some stores require manual verification. It currently watches Caught in the Rise only. No DistroKid notification receiver/email integration is configured; polling works without one.
+
+Current verified link: Spotify https://open.spotify.com/album/2Id9x5BGFVE7SSmULL5R2o
+No additional service link was verified during this check. This patch has not been published: GitHub rejected the integration write (403).
