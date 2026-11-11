@@ -4,6 +4,17 @@ import { pathToFileURL } from 'node:url';
 
 const decode = value => value.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(["'])(.*?)\2/g)].map(m => [m[1], decode(m[3])]));
+const caughtServices = {
+  spotify: /^https:\/\/open\.spotify\.com\/(?:album|track)\/[A-Za-z0-9]+(?:\?.*)?$/,
+  applemusic: /^https:\/\/music\.apple\.com\/[a-z]{2}\/(?:album|song)\/[^/?]+\/\d+(?:\?.*)?$/,
+  itunes: /^https:\/\/music\.apple\.com\/[a-z]{2}\/(?:album|song)\/[^/?]+\/\d+\?.*\bapp=itunes\b/,
+  amazonmusic: /^https:\/\/music\.amazon\.(?:com|co\.uk)\/(?:albums|tracks)\/[A-Z0-9]+(?:\?.*)?$/,
+  youtube: /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+(?:&.*)?$/,
+  youtubemusic: /^https:\/\/music\.youtube\.com\/watch\?v=[\w-]+(?:&.*)?$/,
+  tidal: /^https:\/\/(?:listen\.|www\.)?tidal\.com\/(?:browse\/)?(?:album|track)\/\d+(?:\?.*)?$/,
+  iheartradio: /^https:\/\/www\.iheart\.com\/artist\/[^/]+\/(?:albums|songs)\/[^/?]+\/?$/,
+  deezer: /^https:\/\/www\.deezer\.com\/(?:[a-z]{2}\/)?(?:album|track)\/\d+$/,
+};
 async function walk(dir) {
   const files = [];
   for (const item of await readdir(dir, {withFileTypes:true})) {
@@ -12,7 +23,7 @@ async function walk(dir) {
   }
   return files;
 }
-export async function auditSite(directory) {
+export async function auditSite(directory, { expectedVersion } = {}) {
   const root = resolve(directory);
   const allFiles = await walk(root);
   const htmlFiles = allFiles.filter(path => path.endsWith('.html'));
@@ -46,7 +57,8 @@ export async function auditSite(directory) {
     if (/Read the Story<\/a>/i.test(html)) errors.push(name + ': short story button returned');
     if ((html.match(/class="button primary"[^>]*>Read the Full Story<\/a>/g) || []).length !== 1) errors.push(name + ': expected one full story action');
     if (/distrokid\.com\/hyperfollow|<iframe/i.test(html)) errors.push(name + ': unexpected redirect service or embedded player');
-    if (!html.includes('Ridgeworn Records') || !html.includes('Website release v1.1.15')) errors.push(name + ': footer credits/version missing');
+    if (!html.includes('Ridgeworn Records') || !/Website release v\d+\.\d+\.\d+/.test(html)) errors.push(name + ': footer credits/version missing');
+    if (expectedVersion && !html.includes('Website release v' + expectedVersion)) errors.push(name + ': expected website release v' + expectedVersion);
   }
   for (const required of ['index.html', 'songs/caught-in-the-rise/index.html', 'songs/gator-bob/index.html', 'songs/one-more-angel/index.html']) {
     if (!pages.has(resolve(root, required))) errors.push('Required page missing: ' + required);
@@ -74,15 +86,22 @@ export async function auditSite(directory) {
       }
     }
   }
-  const data = JSON.parse(await readFile(resolve(root,'data/caught-in-the-rise-links.json'),'utf8'));
-  for (const name of ['index.html','songs/caught-in-the-rise/index.html']) {
+  const caughtPages = ['index.html','songs/caught-in-the-rise/index.html'];
+  const grids = caughtPages.map(name => {
     const html = pages.get(resolve(root,name))?.html || '';
     const actual = [...html.matchAll(/<a\b[^>]*data-service="[^"]+"[^>]*>/g)].map(m=>attrs(m[0]));
-    if (actual.length !== data.links.length) errors.push(name + ': service count differs from saved link data');
-    for (const {service,url} of data.links) if (!actual.some(a=>a['data-service']===service && a.href===url)) errors.push(name + ': missing saved service ' + service);
-  }
+    const services = new Map(actual.map(link => [link['data-service'], link.href]));
+    if (services.size !== actual.length) errors.push(name + ': duplicate listening service');
+    for (const [service, pattern] of Object.entries(caughtServices)) {
+      const url = services.get(service);
+      if (!url) errors.push(name + ': missing listening service ' + service);
+      else if (!pattern.test(url)) errors.push(name + ': invalid direct URL for ' + service);
+    }
+    return services;
+  });
+  for (const [service, url] of grids[0]) if (grids[1].get(service) !== url) errors.push('Caught in the Rise grids disagree for ' + service);
   if (errors.length) throw new Error('Site audit failed:\n' + errors.join('\n'));
-  const result = {directory, pages:htmlFiles.length, internalReferences, featuredServices:data.links.length, errors:0};
+  const result = {directory, pages:htmlFiles.length, internalReferences, featuredServices:grids[0].size, errors:0};
   console.log(JSON.stringify(result));
   return result;
 }
