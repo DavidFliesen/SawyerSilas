@@ -14,6 +14,14 @@ test('all source and built pages have real stories, listening lists, and valid i
 test('iTunes purchase URLs are not mistaken for Apple Music', () => {
   assert.equal(serviceFor('https://music.apple.com/us/album/caught-in-the-rise/6832419151?i=6832419153&app=itunes'), 'itunes');
 });
+test('audit rejects an uppercase Index.html before publishing', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'sawyer-case-'));
+  try {
+    await cp('public', dir, {recursive:true});
+    await cp(join(dir,'index.html'), join(dir,'Index.html'));
+    await assert.rejects(auditSite(dir), /Case-duplicate|lowercase index/);
+  } finally { await rm(dir, {recursive:true, force:true}); }
+});
 test('rendering refuses to erase links or write a page with missing markers', async () => {
   const html = await readFile('public/index.html', 'utf8');
   assert.throws(() => renderReleaseLinks(html, [], './assets/'), /empty listening list/);
