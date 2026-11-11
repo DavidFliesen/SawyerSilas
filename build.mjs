@@ -1,10 +1,9 @@
 import { cp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 
-import { syncReleasePages } from './scripts/render-release-links.mjs';
 import { auditSite } from './scripts/audit-site.mjs';
 
-const releaseLinks = JSON.parse(await readFile('public/data/caught-in-the-rise-links.json', 'utf8'));
-await syncReleasePages(releaseLinks.links);
+const { version } = JSON.parse(await readFile('site-config.json', 'utf8'));
+if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('site-config.json must contain a semantic version');
 await auditSite('public');
 
 // CF_PAGES_URL can be a one-deployment hostname. Canonicals use the permanent site.
@@ -28,6 +27,10 @@ for (const path of pages) {
   const page = new URL(path, base);
   const file = 'dist/' + path + 'index.html';
   let html = await readFile(file, 'utf8');
+  html = html
+    .replace(/(styles\.css\?v=)[^"']+/g, '$1' + version)
+    .replace(/(site\.js\?v=)[^"']+/g, '$1' + version)
+    .replace(/Website release v\d+\.\d+\.\d+/g, 'Website release v' + version);
   // Rebuild these owned tags without duplicating source metadata.
   html = html.replace(/\s*<link rel="canonical"[^>]*>/g, '').replace(/\s*<meta (?:property="og:url"|name="(?:robots|twitter:card|twitter:title|twitter:description|twitter:image)")[^>]*>/g, '').replace(/\s*<script type="application\/ld\+json" data-site-seo>[\s\S]*?<\/script>/g, '');
   const image = html.match(/<meta property="og:image" content="([^"]+)">/)?.[1];
@@ -38,7 +41,9 @@ for (const path of pages) {
   const graph = [artist, { '@type': 'WebSite', '@id': new URL('#website', base).href, url: base.href, name: 'Sawyer Silas Music', inLanguage: 'en', publisher: { '@id': artist['@id'] } }];
   const webPage = { '@type': 'WebPage', '@id': page.href + '#webpage', url: page.href, name: title, description, inLanguage: 'en', isPartOf: { '@id': new URL('#website', base).href } };
   if (path === 'songs/caught-in-the-rise/') {
-    const recording = { '@type': 'MusicRecording', '@id': page.href + '#recording', name: 'Caught in the Rise', url: page.href, datePublished: '2026-11-11', byArtist: { '@id': artist['@id'] }, genre: ['Country', 'Outlaw country'], image: imageUrl, sameAs: ['https://open.spotify.com/album/2Id9x5BGFVE7SSmULL5R2o'], inAlbum: { '@type': 'MusicAlbum', name: 'Caught in the Rise', albumReleaseType: 'https://schema.org/SingleRelease', recordLabel: { '@type': 'Organization', name: 'Ridgeworn Records' } } };
+    const directLinks = [...html.matchAll(/<a\b[^>]*data-service="[^"]+"[^>]*href="([^"]+)"[^>]*>/g)]
+      .map(match => match[1].replace(/&amp;/g, '&'));
+    const recording = { '@type': 'MusicRecording', '@id': page.href + '#recording', name: 'Caught in the Rise', url: page.href, datePublished: '2026-11-11', byArtist: { '@id': artist['@id'] }, genre: ['Country', 'Outlaw country'], image: imageUrl, sameAs: directLinks, inAlbum: { '@type': 'MusicAlbum', name: 'Caught in the Rise', albumReleaseType: 'https://schema.org/SingleRelease', recordLabel: { '@type': 'Organization', name: 'Ridgeworn Records' } } };
     graph.push(recording);
     webPage.mainEntity = { '@id': recording['@id'] };
     graph.push({ '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: 'Sawyer Silas', item: base.href }, { '@type': 'ListItem', position: 2, name: 'Caught in the Rise', item: page.href } ] });
@@ -60,4 +65,4 @@ for (const path of pages) {
 await writeFile('dist/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + pages.map(path => '  <url><loc>' + escape(new URL(path, base).href) + '</loc></url>').join('\n') + '\n</urlset>\n');
 await writeFile('dist/robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + new URL('sitemap.xml', base).href + '\n');
 
-await auditSite('dist');
+await auditSite('dist', { expectedVersion: version });

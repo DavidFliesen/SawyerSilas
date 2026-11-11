@@ -1,9 +1,17 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.13** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.16** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.16
+
+- Removed the unfinished cross-store discovery and GitHub Actions updater so it cannot overwrite verified music links.
+- Made the static HTML listening grids authoritative and added build checks that require matching, direct service URLs on the homepage and “Caught in the Rise” page.
+- Retained the Cloudflare Apple catalog lookup for adding newly released titles to the homepage without changing repository files.
+- Centralized the published website version in `site-config.json`, aligned every page and asset cache version, and expanded the song’s structured data to include all published service links.
+- Added Git housekeeping and strengthened the site audit against missing, mismatched, or artist-profile links.
 
 ## Release v1.1.13
 
@@ -58,19 +66,11 @@ Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn
 
 Cloudflare redeploys after pushes to the connected branch. [Cloudflare Pages Git guide](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
-## How the catalog updates
+## How the catalog and listening links update
 
-### Release-link updater in v1.1.8
+Verified streaming and download links are stored directly in the listening grids in `public/index.html` and `public/songs/caught-in-the-rise/index.html`. Update both grids together. The build stops if a required service is missing, if the grids disagree, or if a link is an invalid service URL. Artist profiles, search URLs, pre-saves, distributor pages, and unverified destinations should not be used as song links.
 
-The old visitor-time lookup checked Apple only. It did not receive release notifications or commit new service links. The new **Update verified release links** GitHub Actions workflow checks every 30 minutes (:17 and :47 UTC), with a manual **Actions → Update verified release links → Run workflow** option. Upload all changed files at the repository root, including `.github/workflows/release-links.yml` (file pickers sometimes omit folders beginning with a dot).
-
-Enable Actions if GitHub prompts. The workflow requests `contents: write` for its built-in token; repository policy and branch rules must permit its commit to `main`. No personal token or music API key is required. It commits only when verified links change, allowing the connected Cloudflare Git integration to deploy the update. Scheduled runs can be delayed; GitHub may disable schedules in public repositories after 60 days of inactivity. Check the Actions log for source failures and commit errors.
-
-Discovery checks Apple's U.S. artist catalog and Deezer independently, plus an optional cross-service resolver and HyperFollow for candidate URLs. Candidates must identify the song and artist in the service's own title metadata; Apple/Deezer catalog records require the exact title and artist. Artist profiles, search URLs, pre-saves, and distributor pages are excluded. Some services block metadata access or expose no usable lookup, so this cannot guarantee automatic links from every store. A failed source is retried on the next run and never removes a previously verified link.
-
-The published JSON in `public/data/caught-in-the-rise-links.json` and the song's static grid preserve links through API outages. Visible song pages refresh published data every five minutes. The live Apple endpoint is a secondary discovery path; its cache is now five minutes and upstream errors are logged. It does not control release timing. There is no DistroKid email/webhook connection. An authenticated external integration may send the optional `repository_dispatch` event `release-published`; polling needs no such integration.
-
-This updater currently watches **Caught in the Rise** only. Add separate identity/configuration and an updater target for future songs. Keep all master audio outside GitHub.
+There is no GitHub workflow or browser script that changes these links. This keeps a Cloudflare build from replacing a manually verified link with older saved data. Cloudflare deploys the static links after the changed HTML files are committed to `main`.
 
 The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for five minutes at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the three story pages and use their published links.
 
@@ -80,13 +80,13 @@ The homepage is in `public/index.html`. Edit the individual song stories, covers
 
 Every song page uses the browser’s built-in player for a 30-second preview. “Gator Bob” and “One More Angel” stream their promotional samples from iTunes. “Caught in the Rise” plays the excerpt at `public/assets/caught-in-the-rise-preview.m4a` immediately, independently of the catalog. The site package contains only this excerpt. Keep the master WAV outside the repository.
 
-## Local preview
+## Local preview and verification
 
-Run `node build.mjs` to produce the static site in `dist/`. Serve `dist/` with a local web server to check the song pages and their links. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
+Set the release in `site-config.json`, then run `node build.mjs` to produce the static site in `dist/`. The build validates the source pages, updates the published footer and CSS/JavaScript cache version, adds canonical and structured metadata, and audits the completed site. Run `node --test tests/*.test.mjs` for the regression tests. Serve `dist/` with a local web server to check the song pages and their links. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
 
 The music service icons are sourced from [Simple Icons](https://github.com/simple-icons/simple-icons) and [Musicfetch’s Qobuz brand assets](https://musicfetch.io/services/qobuz/assets).
 
-## Search discovery and ownership verification (v1.1.8)
+## Search discovery and ownership verification
 
 The build generates one canonical URL per page, XML sitemap, robots.txt, Open Graph/Twitter cards, and JSON-LD structured metadata for the artist, website, song and breadcrumbs. The default canonical site is https://sawyersilas.pages.dev/; temporary deployment URLs are not used. For a future custom domain, set SITE_URL to that permanent HTTPS URL and rebuild. Structured metadata supports discovery; it does not guarantee search indexing, ranking, or a rich result.
 
@@ -96,4 +96,3 @@ After deploying:
 2. Bing Webmaster Tools: https://www.bing.com/webmasters/ — Import your verified Google Search Console site, or add/verify it separately, then submit the same sitemap. There is no need to pay a search-submission service.
 3. Link the permanent site from your Spotify/Apple Music artist profiles and social accounts. These are normal links, not search-engine registrations. Check that the site is publicly accessible without Cloudflare Access login. Do not register the numbered deployment URLs as separate sites.
 
-This connection's accessible GitHub installation (179134200) returned only DavidFliesen/adoptacommunity in its selected-repository list. DavidFliesen has admin/push rights to SawyerSilas, but those are user rights, not the app token's permissions. Public reads can succeed without app repository access. Open https://github.com/settings/installations/179134200 and add SawyerSilas to the selected repositories, save, and refresh/reconnect the GitHub connection in ChatGPT. Check that the app requests Contents read/write; if its declared permissions are read-only, repository selection alone cannot add write capability. App workflow-file changes may also need Workflows write. This is separate from GitHub Actions workflow-token permissions and Cloudflare's GitHub app.
