@@ -1,0 +1,19 @@
+Sawyer Silas v1.1.8 — changed files only, cumulative from v1.1.6
+
+You do not need to upload v1.1.7 first. Extract and upload these files at the repository root on main, preserving paths. Existing audio/images remain untouched; no audio is included.
+
+Includes: credit moved beneath the pulled lyric at normal story paragraph size; permanent canonical URLs; sitemap.xml; robots.txt; social preview tags; artist/website/song/breadcrumb JSON-LD; v1.1.7 scheduled link updater; v1.1.8 footer on every page.
+
+Cloudflare settings stay: node build.mjs; dist; production branch main. Default canonical URL is https://sawyersilas.pages.dev/. Do not use the numbered deployment URL in search registrations. A custom domain can later be set through SITE_URL.
+
+Ensure the hidden .github/workflows/release-links.yml file is uploaded too. GitHub Actions > Update verified release links > Run workflow can run it manually after installation. The workflow needs built-in contents:write permission and branch policy that permits its bot commit. See README for details and limitations.
+
+SEARCH REGISTRATION
+1. https://search.google.com/search-console/ — Add URL-prefix property https://sawyersilas.pages.dev/. Choose HTML-file verification, save Google's exact verification file in public/, deploy, then Verify. Or add Google's provided meta tag to the homepage head. Keep the file/tag. Submit https://sawyersilas.pages.dev/sitemap.xml. Inspect https://sawyersilas.pages.dev/songs/caught-in-the-rise/ and request indexing.
+2. https://www.bing.com/webmasters/ — Import the verified Google property or verify separately; submit the same sitemap.
+No paid submission service is needed. Indexing/ranking is not guaranteed. Make the site publicly accessible without a Cloudflare Access login.
+
+GITHUB CONNECTION
+The connected GitHub installation lists only DavidFliesen/adoptacommunity as an accessible selected repository. SawyerSilas is public, so reading it succeeds even without app access. Your account has admin/push rights; that does not grant them to the app token. Open https://github.com/settings/installations/179134200, add SawyerSilas under selected repositories, and save. Refresh/reconnect GitHub in ChatGPT and retry. Check Contents read/write if the installed app offers it; an app with only declared read permission cannot gain write simply by selecting a repo. Workflow-file edits may also require Workflows write. This is separate from Cloudflare's GitHub app and the GitHub Actions workflow token.
+
+NOT PUBLISHED: the attempted GitHub file update returned HTTP403 Resource not accessible by integration. Uploading this package or fixing app authorization is required before Cloudflare can deploy these changes.

@@ -1,7 +1,7 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.7** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.8** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
 
@@ -19,14 +19,14 @@ Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn
 | Build output directory | `dist` |
 | Root directory | Repository root |
 
-4. Deploy and open the assigned `pages.dev` address. Add a custom domain in the Pages project if you want one. If you do, set `SITE_URL` to its full HTTPS origin in the production build environment and redeploy so the canonical URL and social card use it. You can also set `SITE_URL` to your final `pages.dev` origin. Without it, the build uses Cloudflare’s deployment URL for the social card.
+4. Deploy and open the assigned `pages.dev` address. Add a custom domain in the Pages project if you want one. If you do, set `SITE_URL` to its full HTTPS origin in the production build environment and redeploy so the canonical URL and social card use it. You can also set `SITE_URL` to your final `pages.dev` origin. Without it, the build uses the permanent https://sawyersilas.pages.dev/ address for canonicals, the sitemap, and social cards.
 5. Share the deployed home page in your social profiles and artist accounts wherever a website field is available. Use `/#story`, `/#listen`, or `/#music` to link to a particular section.
 
 Cloudflare redeploys after pushes to the connected branch. [Cloudflare Pages Git guide](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
 ## How the catalog updates
 
-### Release-link updater in v1.1.7
+### Release-link updater in v1.1.8
 
 The old visitor-time lookup checked Apple only. It did not receive release notifications or commit new service links. The new **Update verified release links** GitHub Actions workflow checks every 30 minutes (:17 and :47 UTC), with a manual **Actions → Update verified release links → Run workflow** option. Upload all changed files at the repository root, including `.github/workflows/release-links.yml` (file pickers sometimes omit folders beginning with a dot).
 
@@ -51,3 +51,15 @@ Every song page uses the browser’s built-in player for a 30-second preview. �
 Run `node build.mjs` to produce the static site in `dist/`. Serve `dist/` with a local web server to check the song pages and their links. To run the catalog endpoint as well, use `npx wrangler pages dev dist` from the project root.
 
 The music service icons are sourced from [Simple Icons](https://github.com/simple-icons/simple-icons) and [Musicfetch’s Qobuz brand assets](https://musicfetch.io/services/qobuz/assets).
+
+## Search discovery and ownership verification (v1.1.8)
+
+The build generates one canonical URL per page, XML sitemap, robots.txt, Open Graph/Twitter cards, and JSON-LD structured metadata for the artist, website, song and breadcrumbs. The default canonical site is https://sawyersilas.pages.dev/; temporary deployment URLs are not used. For a future custom domain, set SITE_URL to that permanent HTTPS URL and rebuild. Structured metadata supports discovery; it does not guarantee search indexing, ranking, or a rich result.
+
+After deploying:
+
+1. Google Search Console: https://search.google.com/search-console/ — Add a URL-prefix property for https://sawyersilas.pages.dev/ (not the temporary numbered deployment URL). Choose HTML-file verification: put Google's exact verification file in public/ and deploy, then click Verify. Alternatively add its exact HTML meta tag inside the homepage head. Keep the verification file/tag in place. Submit https://sawyersilas.pages.dev/sitemap.xml. Use URL Inspection for https://sawyersilas.pages.dev/songs/caught-in-the-rise/ and request indexing.
+2. Bing Webmaster Tools: https://www.bing.com/webmasters/ — Import your verified Google Search Console site, or add/verify it separately, then submit the same sitemap. There is no need to pay a search-submission service.
+3. Link the permanent site from your Spotify/Apple Music artist profiles and social accounts. These are normal links, not search-engine registrations. Check that the site is publicly accessible without Cloudflare Access login. Do not register the numbered deployment URLs as separate sites.
+
+This connection's accessible GitHub installation (179134200) returned only DavidFliesen/adoptacommunity in its selected-repository list. DavidFliesen has admin/push rights to SawyerSilas, but those are user rights, not the app token's permissions. Public reads can succeed without app repository access. Open https://github.com/settings/installations/179134200 and add SawyerSilas to the selected repositories, save, and refresh/reconnect the GitHub connection in ChatGPT. Check that the app requests Contents read/write; if its declared permissions are read-only, repository selection alone cannot add write capability. App workflow-file changes may also need Workflows write. This is separate from GitHub Actions workflow-token permissions and Cloudflare's GitHub app.
