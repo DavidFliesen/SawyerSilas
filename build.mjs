@@ -57,8 +57,6 @@ for (const path of pages) {
   html = html.replace('</head>', '  ' + tags + '\n</head>');
   await writeFile(file, html);
 }
-// The historical capitalized URL serves the same complete, canonical homepage.
-await cp('dist/index.html', 'dist/Index.html');
 await writeFile('dist/sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + pages.map(path => '  <url><loc>' + escape(new URL(path, base).href) + '</loc></url>').join('\n') + '\n</urlset>\n');
 await writeFile('dist/robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + new URL('sitemap.xml', base).href + '\n');
 
