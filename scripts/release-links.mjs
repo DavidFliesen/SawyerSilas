@@ -15,6 +15,9 @@ export const SERVICES = {
   deezer: ['Deezer', 'deezer', /^https:\/\/www\.deezer\.com\/(?:[a-z]{2}\/)?(album|track)\/\d+$/],
 };
 export function serviceFor(url) {
+  if (typeof url !== 'string') return undefined;
+  // iTunes shares Apple's album URL; classify its app parameter first.
+  if (SERVICES.itunes[2].test(url) && new URL(url).searchParams.get('app') === 'itunes') return 'itunes';
   return Object.keys(SERVICES).find(key => SERVICES[key][2].test(url));
 }
 const decode = s => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
