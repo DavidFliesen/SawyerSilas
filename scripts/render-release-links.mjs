@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { SERVICES, serviceFor } from './release-links.mjs';
 
-export const RELEASE_PAGES = ['public/index.html', 'public/Index.html', 'public/songs/caught-in-the-rise/index.html'];
+export const RELEASE_PAGES = ['public/index.html', 'public/songs/caught-in-the-rise/index.html'];
 export const escapeHTML = value => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 export function renderReleaseLinks(html, links, assetRoot) {
   const markers = /<!-- release-services:start -->[\s\S]*?<!-- release-services:end -->/g;

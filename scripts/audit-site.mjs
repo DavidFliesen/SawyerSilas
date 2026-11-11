@@ -14,7 +14,16 @@ async function walk(dir) {
 }
 export async function auditSite(directory) {
   const root = resolve(directory);
-  const htmlFiles = (await walk(root)).filter(path => path.endsWith('.html'));
+  const allFiles = await walk(root);
+  const htmlFiles = allFiles.filter(path => path.endsWith('.html'));
+  const caseNames = new Map();
+  for (const path of allFiles) {
+    const name = relative(root, path);
+    const lower = name.toLowerCase();
+    if (caseNames.has(lower)) throw new Error('Case-duplicate files: ' + caseNames.get(lower) + ' and ' + name);
+    caseNames.set(lower, name);
+    if (/(^|[\\/])index\.html$/i.test(name) && !/(^|[\\/])index\.html$/.test(name)) throw new Error('Use lowercase index.html: ' + name);
+  }
   const errors = [], pages = new Map();
   let internalReferences = 0;
   for (const path of htmlFiles) {
@@ -37,9 +46,9 @@ export async function auditSite(directory) {
     if (/Read the Story<\/a>/i.test(html)) errors.push(name + ': short story button returned');
     if ((html.match(/class="button primary"[^>]*>Read the Full Story<\/a>/g) || []).length !== 1) errors.push(name + ': expected one full story action');
     if (/distrokid\.com\/hyperfollow|<iframe/i.test(html)) errors.push(name + ': unexpected redirect service or embedded player');
-    if (!html.includes('Ridgeworn Records') || !html.includes('Website release v1.1.14')) errors.push(name + ': footer credits/version missing');
+    if (!html.includes('Ridgeworn Records') || !html.includes('Website release v1.1.15')) errors.push(name + ': footer credits/version missing');
   }
-  for (const required of ['index.html', 'Index.html', 'songs/caught-in-the-rise/index.html', 'songs/gator-bob/index.html', 'songs/one-more-angel/index.html']) {
+  for (const required of ['index.html', 'songs/caught-in-the-rise/index.html', 'songs/gator-bob/index.html', 'songs/one-more-angel/index.html']) {
     if (!pages.has(resolve(root, required))) errors.push('Required page missing: ' + required);
   }
   for (const [path, {html}] of pages) {
@@ -66,7 +75,7 @@ export async function auditSite(directory) {
     }
   }
   const data = JSON.parse(await readFile(resolve(root,'data/caught-in-the-rise-links.json'),'utf8'));
-  for (const name of ['index.html','Index.html','songs/caught-in-the-rise/index.html']) {
+  for (const name of ['index.html','songs/caught-in-the-rise/index.html']) {
     const html = pages.get(resolve(root,name))?.html || '';
     const actual = [...html.matchAll(/<a\b[^>]*data-service="[^"]+"[^>]*>/g)].map(m=>attrs(m[0]));
     if (actual.length !== data.links.length) errors.push(name + ': service count differs from saved link data');
