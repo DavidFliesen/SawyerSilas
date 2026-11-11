@@ -34,6 +34,10 @@
     {
       "service": "iheartradio",
       "url": "https://www.iheart.com/artist/sawyer-silas-52206517/songs/caught-in-the-rise-446341438/"
+    },
+    {
+      "service": "deezer",
+      "url": "https://www.deezer.com/us/album/1142051611"
     }
   ]
 }
