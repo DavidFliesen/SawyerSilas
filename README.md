@@ -1,9 +1,15 @@
 # Sawyer Silas · Official Music
-URL: https://sawyersilas.pages.dev
+https://sawyersilas.pages.dev
 
-**Website release v1.1.8** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.9** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.9
+
+- Added and retained direct “Caught in the Rise” links for Spotify, Apple Music, iTunes, Amazon Music, YouTube, YouTube Music, TIDAL, and iHeartRadio.
+- Updated the persistent release-link JSON so scheduled link checks cannot remove these confirmed links.
+- Updated the visible website release number and asset cache version on every page.
 
 ## Publish through GitHub and Cloudflare Pages
 
