@@ -1,5 +1,5 @@
 const SITE_ROOT = new URL('./', document.currentScript.src);
-const featuredApple = document.querySelector('#featured-apple');
+const releaseGrid = document.querySelector('.release-links .service-grid');
 const records = document.querySelector('#records');
 const share = document.querySelector('#share');
 const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
@@ -58,20 +58,10 @@ function addCatalogRelease(release) {
 
 async function loadCatalog() {
   try {
-    const response = await fetch(new URL('api/catalog?v=2', SITE_ROOT), { headers: { Accept: 'application/json' } });
+    const response = await fetch(new URL('api/catalog?v=3', SITE_ROOT), { headers: { Accept: 'application/json' } });
     if (!response.ok) return;
     const { featured, releases } = await response.json();
-    if (featuredApple?.hidden && featured?.url) {
-      const songUrl = new URL(featured.url);
-      if (songUrl.protocol === 'https:' && songUrl.hostname === 'music.apple.com' &&
-          /^\/[a-z]{2}\/album\/caught-in-the-rise(?:-single)?\/\d+\/?$/i.test(songUrl.pathname)) {
-        featuredApple.href = songUrl.href;
-        featuredApple.hidden = false;
-        featuredApple.parentElement.hidden = false;
-        const pending = document.querySelector('#release-links-pending');
-        if (pending) pending.hidden = true;
-      }
-    }
+    if (releaseGrid && featured?.url) addReleaseLinks([{ service: 'applemusic', url: featured.url }]);
     if (!records) return;
     const key = (title, date) => title.trim().toLowerCase() + '|' + date;
     const existing = new Set([...records.children].map(row => key(row.dataset.title, row.dataset.date)));
@@ -86,7 +76,7 @@ async function loadCatalog() {
   }
 }
 
-if (navigator.share || navigator.clipboard) {
+if (share && (navigator.share || navigator.clipboard)) {
   share.hidden = false;
   share.addEventListener('click', async () => {
     const url = new URL(location.pathname, location.href).href;
@@ -104,4 +94,52 @@ if (navigator.share || navigator.clipboard) {
   });
 }
 
-if ((records || featuredApple) && location.protocol.startsWith('http')) loadCatalog();
+if ((records || releaseGrid) && location.protocol.startsWith('http')) loadCatalog();
+
+// Published links remain available when the live Apple lookup is blocked.
+const releaseServices = {
+  spotify: ['Spotify', 'spotify', /^https:\/\/open\.spotify\.com\/(album|track)\/[A-Za-z0-9]+(?:\?.*)?$/],
+  applemusic: ['Apple Music', 'applemusic', /^https:\/\/music\.apple\.com\/[a-z]{2}\/(album|song)\/[^/?]+\/\d+(?:\?.*)?$/],
+  itunes: ['iTunes', 'itunes', /^https:\/\/music\.apple\.com\/[a-z]{2}\/(album|song)\/[^/?]+\/\d+\?.*app=itunes/],
+  amazonmusic: ['Amazon Music', 'amazonmusic', /^https:\/\/music\.amazon\.(com|co\.uk)\/(albums|tracks)\/[A-Z0-9]+(?:\?.*)?$/],
+  youtube: ['YouTube', 'youtube', /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+(?:&.*)?$/],
+  youtubemusic: ['YouTube Music', 'youtubemusic', /^https:\/\/music\.youtube\.com\/watch\?v=[\w-]+(?:&.*)?$/],
+  tidal: ['TIDAL', 'tidal', /^https:\/\/(?:listen\.|www\.)?tidal\.com\/(?:browse\/)?(album|track)\/\d+(?:\?.*)?$/],
+  qobuz: ['Qobuz', 'qobuz', /^https:\/\/www\.qobuz\.com\/[a-z]{2}-[a-z]{2}\/(album|track)\/[^?#]+$/],
+  iheartradio: ['iHeartRadio', 'iheartradio', /^https:\/\/www\.iheart\.com\/artist\/[^/]+\/(albums|songs)\/[^/?]+\/?$/],
+  deezer: ['Deezer', 'deezer', /^https:\/\/www\.deezer\.com\/(?:[a-z]{2}\/)?(album|track)\/\d+$/],
+};
+function addReleaseLinks(links) {
+  for (const { service, url } of links || []) {
+    const spec = releaseServices[service];
+    if (!spec || !spec[2].test(url) || releaseGrid.querySelector('[data-service="' + service + '"]')) continue;
+    const link = document.createElement('a');
+    link.className = 'service-link button';
+    link.dataset.service = service;
+    link.href = url;
+    const ns = 'http://www.w3.org/2000/svg';
+    const icon = document.createElementNS(ns, 'svg');
+    icon.setAttribute('class', 'service-icon');
+    icon.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', new URL('assets/music-services.svg#' + spec[1], SITE_ROOT).href);
+    icon.append(use);
+    link.append(icon, spec[0]);
+    releaseGrid.append(link);
+  }
+  if (releaseGrid.querySelector('a[href]')) {
+    releaseGrid.hidden = false;
+    const pending = document.querySelector('#release-links-pending');
+    if (pending) pending.hidden = true;
+  }
+}
+if (releaseGrid && location.protocol.startsWith('http')) {
+  const refreshLinks = async () => {
+    try {
+      const response = await fetch(new URL('data/caught-in-the-rise-links.json', SITE_ROOT), { cache: 'no-cache' });
+      if (response.ok) addReleaseLinks((await response.json()).links);
+    } catch { /* The static HTML still contains the last verified links. */ }
+  };
+  refreshLinks();
+  setInterval(() => { if (!document.hidden) { refreshLinks(); loadCatalog(); } }, 300000);
+}
