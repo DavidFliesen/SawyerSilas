@@ -7,7 +7,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZon
 for (const player of document.querySelectorAll('.song-preview')) {
   const showError = () => {
     player.hidden = true;
-    player.nextElementSibling.hidden = false;
+    if (player.nextElementSibling) player.nextElementSibling.hidden = false;
   };
   player.addEventListener('error', showError);
   if (player.error) showError();
@@ -17,6 +17,7 @@ function addCatalogRelease(release) {
   const record = document.createElement('article');
   record.className = 'record';
   record.dataset.date = release.date;
+  record.dataset.title = release.title;
   if (release.art) {
     const art = document.createElement('img');
     art.src = release.art;
@@ -65,7 +66,12 @@ async function loadCatalog() {
     if (!records) return;
     const key = (title, date) => title.trim().toLowerCase() + '|' + date;
     const existing = new Set([...records.children].map(row => key(row.dataset.title, row.dataset.date)));
-    for (const release of releases) {
+    for (const release of Array.isArray(releases) ? releases : []) {
+      if (typeof release.title !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(release.date)) continue;
+      try {
+        const url = new URL(release.url);
+        if (url.protocol !== 'https:' || url.hostname !== 'music.apple.com' || url.username || url.password) continue;
+      } catch { continue; }
       const id = key(release.title, release.date);
       if (existing.has(id)) continue;
       addCatalogRelease(release);
@@ -86,10 +92,10 @@ if (share && (navigator.share || navigator.clipboard)) {
         await navigator.share({ title: document.title, url });
       } else {
         await navigator.clipboard.writeText(url);
-        status.textContent = 'Page link copied.';
+        if (status) status.textContent = 'Page link copied.';
       }
     } catch (error) {
-      if (error.name !== 'AbortError') status.textContent = 'Copy the link from your address bar.';
+      if (status && error.name !== 'AbortError') status.textContent = 'Copy the link from your address bar.';
     }
   });
 }
@@ -112,7 +118,7 @@ const releaseServices = {
 function addReleaseLinks(links) {
   for (const { service, url } of links || []) {
     const spec = releaseServices[service];
-    if (!spec || !spec[2].test(url) || releaseGrid.querySelector('[data-service="' + service + '"]')) continue;
+    if (!releaseGrid || !spec || typeof url !== 'string' || !spec[2].test(url) || releaseGrid.querySelector('[data-service="' + service + '"]')) continue;
     const link = document.createElement('a');
     link.className = 'service-link button';
     link.dataset.service = service;
