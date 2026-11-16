@@ -1,9 +1,14 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.16** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.17** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.17
+
+- Added a LISTEN button below the heading in the left column of each song’s Behind the Song section, linking directly to that page’s preview player and streaming/download links.
+- Preserved all existing stories, previews, and music-service links.
 
 ## Release v1.1.16
 
@@ -95,4 +100,5 @@ After deploying:
 1. Google Search Console: https://search.google.com/search-console/ — Add a URL-prefix property for https://sawyersilas.pages.dev/ (not the temporary numbered deployment URL). Choose HTML-file verification: put Google's exact verification file in public/ and deploy, then click Verify. Alternatively add its exact HTML meta tag inside the homepage head. Keep the verification file/tag in place. Submit https://sawyersilas.pages.dev/sitemap.xml. Use URL Inspection for https://sawyersilas.pages.dev/songs/caught-in-the-rise/ and request indexing.
 2. Bing Webmaster Tools: https://www.bing.com/webmasters/ — Import your verified Google Search Console site, or add/verify it separately, then submit the same sitemap. There is no need to pay a search-submission service.
 3. Link the permanent site from your Spotify/Apple Music artist profiles and social accounts. These are normal links, not search-engine registrations. Check that the site is publicly accessible without Cloudflare Access login. Do not register the numbered deployment URLs as separate sites.
+
 
