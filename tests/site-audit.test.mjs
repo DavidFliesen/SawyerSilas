@@ -5,9 +5,22 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { auditSite } from '../scripts/audit-site.mjs';
 
+test('Christmas release permits pending links but rejects artist profiles and broken listen anchors', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'sawyer-christmas-'));
+  try {
+    await cp('public', dir, {recursive:true});
+    const path = join(dir, 'songs/back-when-christmas-was-bigger-than-the-world/index.html');
+    const original = await readFile(path, 'utf8');
+    await writeFile(path, original.replace('href="#listen"', 'href="#missing-listen"'));
+    await assert.rejects(auditSite(dir), /broken fragment/);
+    await writeFile(path, original.replace('(links coming soon)', '').replace('role="group"></div>', 'role="group"><a data-service="spotify" href="https://open.spotify.com/artist/example">Spotify</a></div>'));
+    await assert.rejects(auditSite(dir), /invalid direct service URL/);
+  } finally { await rm(dir, {recursive:true, force:true}); }
+});
+
 test('all source and built pages have real stories, listening lists, and valid internal references', async () => {
   await auditSite('public');
-  await auditSite('dist', { expectedVersion: '1.1.16' });
+  await auditSite('dist', { expectedVersion: JSON.parse(await readFile('site-config.json', 'utf8')).version });
 });
 test('audit rejects an uppercase Index.html before publishing', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'sawyer-case-'));

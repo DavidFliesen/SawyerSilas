@@ -40,13 +40,15 @@ for (const path of pages) {
   const description = html.match(/<meta name="description" content="([^"]+)">/)?.[1] || '';
   const graph = [artist, { '@type': 'WebSite', '@id': new URL('#website', base).href, url: base.href, name: 'Sawyer Silas Music', inLanguage: 'en', publisher: { '@id': artist['@id'] } }];
   const webPage = { '@type': 'WebPage', '@id': page.href + '#webpage', url: page.href, name: title, description, inLanguage: 'en', isPartOf: { '@id': new URL('#website', base).href } };
-  if (path === 'songs/caught-in-the-rise/') {
+  if (path === 'songs/caught-in-the-rise/' || path === 'songs/back-when-christmas-was-bigger-than-the-world/') {
+    const christmas = path === 'songs/back-when-christmas-was-bigger-than-the-world/';
+    const songName = christmas ? 'Back When Christmas Was Bigger Than The World' : 'Caught in the Rise';
     const directLinks = [...html.matchAll(/<a\b[^>]*data-service="[^"]+"[^>]*href="([^"]+)"[^>]*>/g)]
       .map(match => match[1].replace(/&amp;/g, '&'));
-    const recording = { '@type': 'MusicRecording', '@id': page.href + '#recording', name: 'Caught in the Rise', url: page.href, datePublished: '2026-11-11', byArtist: { '@id': artist['@id'] }, genre: ['Country', 'Outlaw country'], image: imageUrl, sameAs: directLinks, inAlbum: { '@type': 'MusicAlbum', name: 'Caught in the Rise', albumReleaseType: 'https://schema.org/SingleRelease', recordLabel: { '@type': 'Organization', name: 'Ridgeworn Records' } } };
+    const recording = { '@type': 'MusicRecording', '@id': page.href + '#recording', name: songName, url: page.href, datePublished: christmas ? '2026-11-29' : '2026-11-11', byArtist: { '@id': artist['@id'] }, genre: ['Country', 'Outlaw country'], image: imageUrl, sameAs: directLinks, inAlbum: { '@type': 'MusicAlbum', name: songName, albumReleaseType: 'https://schema.org/SingleRelease', recordLabel: { '@type': 'Organization', name: 'Ridgeworn Records' } } };
     graph.push(recording);
     webPage.mainEntity = { '@id': recording['@id'] };
-    graph.push({ '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: 'Sawyer Silas', item: base.href }, { '@type': 'ListItem', position: 2, name: 'Caught in the Rise', item: page.href } ] });
+    graph.push({ '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: 'Sawyer Silas', item: base.href }, { '@type': 'ListItem', position: 2, name: songName, item: page.href } ] });
   }
   graph.push(webPage);
   const tags = [

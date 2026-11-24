@@ -176,3 +176,20 @@ blockquote{margin:1.55rem 0 0;padding:.35rem 0 .35rem 1.2rem;border-left:2px sol
 .service-icon-wide{width:2.55em}
 .site-release{padding-bottom:1rem;color:var(--muted);font-size:.7rem}
 .credits{padding-block:1rem;background:var(--deep);border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
+
+/* Christmas single: candlelight, cranberry and evergreen. */
+.christmas-announcement{background:linear-gradient(110deg,#17392c,#481f28);border-bottom:1px solid #efc47d55;padding:1rem 0;color:#fff1d8}
+.christmas-announcement .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.4rem 1.5rem}
+.christmas-announcement .wrap>span{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:#efc47d}
+.christmas-announcement a{font-family:var(--serif);font-size:1.2rem;text-decoration:underline;text-underline-offset:.2em}
+.theme-christmas{--ink:#14271f;--deep:#101d18;--cream:#fff1d8;--muted:#ddc9aa;--gold:#efc47d}
+.theme-christmas .hero{position:relative;background:radial-gradient(ellipse at 85% 15%,#77532d80,transparent 55%),linear-gradient(130deg,#17392c,#301c1d);border-bottom:1px solid #efc47d55}
+.theme-christmas h1{font-size:clamp(2.8rem,5.3vw,5.1rem);line-height:1.08;letter-spacing:-.045em}
+.theme-christmas .cover img{border:1px solid #efc47d99;box-shadow:0 0 45px #d29b3520,0 22px 55px #0008}
+.theme-christmas .story{background:linear-gradient(120deg,#1b3528,#14271f)}
+.theme-christmas .story .eyebrow::after{content:"✦";font-size:1.1rem}
+.theme-christmas .listen{background:linear-gradient(125deg,#481f28,#2c2022);border-color:#efc47d44}
+.theme-christmas .primary{border-radius:.25rem;box-shadow:0 4px 20px #0002}
+.theme-christmas .preview-panel{background:linear-gradient(145deg,#fff2d438,#fff2d412);border-color:#efc47d66}
+.theme-christmas .artist{background:#172b22}
+.theme-christmas .links-pending{margin-top:.7rem;font-size:.9rem}

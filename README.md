@@ -1,9 +1,17 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.17** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.18** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.18
+
+- Added “Back When Christmas Was Bigger Than The World,” releasing Sunday, November 29, 2026, with an evergreen, cranberry and gold Christmas theme.
+- Added its story, cover art, 30-second chorus preview, About section and direct story/listen navigation; linked it from every existing catalog.
+- Preserved all existing song links and players. The upcoming release shows “links coming soon” until verified song URLs are available.
+- Added the new single to generated song metadata and the sitemap. Updated the website version and checked navigation, assets and build regressions.
+- The preview uses 0:49–1:19 of the recording, including “believing was easy, and sleeping was hard” and the title refrain, with gentle fades. The master WAV is never included in the website or update package.
 
 ## Release v1.1.17
 
@@ -77,13 +85,13 @@ Verified streaming and download links are stored directly in the listening grids
 
 There is no GitHub workflow or browser script that changes these links. This keeps a Cloudflare build from replacing a manually verified link with older saved data. Cloudflare deploys the static links after the changed HTML files are committed to `main`.
 
-The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for five minutes at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The three launch releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the three story pages and use their published links.
+The Pages Function at `/api/catalog` looks up the verified Sawyer Silas Apple Music artist ID in the U.S. iTunes catalog and caches successful responses for five minutes at the edge. It runs when visitors load the page. A new release can appear automatically after Apple lists it. The automatically discovered rows link to Apple Music. The four releases have dedicated story pages with direct music-service links. If the lookup fails, visitors can still open the four story pages and use their published links.
 
 The homepage is in `public/index.html`. Edit the individual song stories, covers, and direct listening links in `public/songs/<song-slug>/index.html`. Add confirmed storefront URLs to the song’s Listen section as they become available. Newly discovered catalog entries link directly to Apple Music until you create a dedicated story page and add it to the homepage.
 
 ## Audio sample
 
-Every song page uses the browser’s built-in player for a 30-second preview. “Gator Bob” and “One More Angel” stream their promotional samples from iTunes. “Caught in the Rise” plays the excerpt at `public/assets/caught-in-the-rise-preview.m4a` immediately, independently of the catalog. The site package contains only this excerpt. Keep the master WAV outside the repository.
+Every song page uses the browser’s built-in player for a 30-second preview. “Gator Bob” and “One More Angel” stream their promotional samples from iTunes. “Caught in the Rise” plays the excerpt at `public/assets/caught-in-the-rise-preview.m4a` immediately, independently of the catalog. The Christmas single also uses a local 30-second chorus excerpt. The site package contains only these short excerpts. Keep the master WAV outside the repository.
 
 ## Local preview and verification
 

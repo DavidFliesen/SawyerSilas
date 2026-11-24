@@ -47,7 +47,15 @@ export async function auditSite(directory, { expectedVersion } = {}) {
     for (const id of ['story', 'listen', 'artist', 'main']) if (!ids.includes(id)) errors.push(name + ': missing #' + id);
     const grid = html.match(/<div class="service-grid"[^>]*>([\s\S]*?)<\/div>/)?.[1] || '';
     const serviceLinks = [...grid.matchAll(/<a\b[^>]+>/g)].map(m => attrs(m[0]));
-    if (serviceLinks.length < 8) errors.push(name + ': listening services missing');
+    const christmas = name === 'songs/back-when-christmas-was-bigger-than-the-world/index.html';
+    if (christmas) {
+      if (!html.includes('datetime="2026-11-29"')) errors.push(name + ': release date missing');
+      if (!serviceLinks.length && !html.includes('(links coming soon)')) errors.push(name + ': pending release notice missing');
+      if (serviceLinks.length && html.includes('(links coming soon)')) errors.push(name + ': remove stale pending notice');
+      for (const link of serviceLinks) {
+        if (!caughtServices[link['data-service']]?.test(link.href || '')) errors.push(name + ': invalid direct service URL');
+      }
+    } else if (serviceLinks.length < 8) errors.push(name + ': listening services missing');
     if (/songs\/(?:gator-bob|one-more-angel)\//.test(name)) {
       const required = ['spotify', 'applemusic', 'amazonmusic', 'youtubemusic', 'tidal', 'qobuz', 'iheartradio', 'amazon'];
       if (name.includes('gator-bob')) required.push('youtube');
