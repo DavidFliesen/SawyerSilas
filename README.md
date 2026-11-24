@@ -1,9 +1,15 @@
 # Sawyer Silas · Official Music
 https://sawyersilas.pages.dev
 
-**Website release v1.1.18** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
+**Website release v1.1.19** · [https://davidfliesen.github.io/SawyerSilas](https://davidfliesen.github.io/SawyerSilas)
 
 Artist page for singer/songwriter Sawyer Silas with songs released via Ridgeworn Records.
+
+## Release v1.1.19
+
+- Made the Christmas single the homepage featured release, including its cover, Christmas theme, full story and 30-second preview.
+- Kept Caught in the Rise on its dedicated song page with all nine verified service links. All four songs remain accessible in the homepage catalog.
+- Updated homepage sharing metadata and build checks to follow the Christmas feature, preserving direct story/listen navigation.
 
 ## Release v1.1.18
 
@@ -81,7 +87,7 @@ Cloudflare redeploys after pushes to the connected branch. [Cloudflare Pages Git
 
 ## How the catalog and listening links update
 
-Verified streaming and download links are stored directly in the listening grids in `public/index.html` and `public/songs/caught-in-the-rise/index.html`. Update both grids together. The build stops if a required service is missing, if the grids disagree, or if a link is an invalid service URL. Artist profiles, search URLs, pre-saves, distributor pages, and unverified destinations should not be used as song links.
+Verified streaming and download links are stored directly in each song page’s listening grid. The homepage now features the Christmas single; keep its grid aligned with `public/songs/back-when-christmas-was-bigger-than-the-world/index.html`. Caught in the Rise retains its links on its own song page. The build stops if a required service is missing, if the grids disagree, or if a link is an invalid service URL. Artist profiles, search URLs, pre-saves, distributor pages, and unverified destinations should not be used as song links.
 
 There is no GitHub workflow or browser script that changes these links. This keeps a Cloudflare build from replacing a manually verified link with older saved data. Cloudflare deploys the static links after the changed HTML files are committed to `main`.
 

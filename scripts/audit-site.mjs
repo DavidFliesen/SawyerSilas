@@ -47,7 +47,7 @@ export async function auditSite(directory, { expectedVersion } = {}) {
     for (const id of ['story', 'listen', 'artist', 'main']) if (!ids.includes(id)) errors.push(name + ': missing #' + id);
     const grid = html.match(/<div class="service-grid"[^>]*>([\s\S]*?)<\/div>/)?.[1] || '';
     const serviceLinks = [...grid.matchAll(/<a\b[^>]+>/g)].map(m => attrs(m[0]));
-    const christmas = name === 'songs/back-when-christmas-was-bigger-than-the-world/index.html';
+    const christmas = (name === 'index.html' || name === 'songs/back-when-christmas-was-bigger-than-the-world/index.html');
     if (christmas) {
       if (!html.includes('datetime="2026-11-29"')) errors.push(name + ': release date missing');
       if (!serviceLinks.length && !html.includes('(links coming soon)')) errors.push(name + ': pending release notice missing');
@@ -94,7 +94,7 @@ export async function auditSite(directory, { expectedVersion } = {}) {
       }
     }
   }
-  const caughtPages = ['index.html','songs/caught-in-the-rise/index.html'];
+  const caughtPages = ['songs/caught-in-the-rise/index.html'];
   const grids = caughtPages.map(name => {
     const html = pages.get(resolve(root,name))?.html || '';
     const actual = [...html.matchAll(/<a\b[^>]*data-service="[^"]+"[^>]*>/g)].map(m=>attrs(m[0]));
@@ -107,7 +107,11 @@ export async function auditSite(directory, { expectedVersion } = {}) {
     }
     return services;
   });
-  for (const [service, url] of grids[0]) if (grids[1].get(service) !== url) errors.push('Caught in the Rise grids disagree for ' + service);
+  const feature = pages.get(resolve(root, 'index.html'))?.html || '';
+  const christmasPage = pages.get(resolve(root, 'songs/back-when-christmas-was-bigger-than-the-world/index.html'))?.html || '';
+  const gridOf = html => html.match(/<div class="service-grid"[^>]*>([\s\S]*?)<\/div>/)?.[1].replaceAll('../../', './') || '';
+  if (gridOf(feature) !== gridOf(christmasPage)) errors.push('Christmas featured listening grids disagree');
+  if (!feature.includes('back-when-christmas-was-bigger-than-the-world-preview.m4a')) errors.push('Christmas featured preview missing');
   if (errors.length) throw new Error('Site audit failed:\n' + errors.join('\n'));
   const result = {directory, pages:htmlFiles.length, internalReferences, featuredServices:grids[0].size, errors:0};
   console.log(JSON.stringify(result));
